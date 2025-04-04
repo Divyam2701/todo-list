@@ -1,7 +1,9 @@
 #!/bin/bash
-cd /home/ubuntu/to-do-list
+echo "Starting the application..."
+cd /home/ec2-user/todo-app
 
-echo "Starting the Vite app using PM2..."
-pm2 serve dist 3000 --spa --name "to-do-list"
+echo "Pulling the latest Docker image..."
+docker pull divyam2701/todo-app:latest
 
-echo "Application is running at http://<your-ec2-ip>:3000"
+echo "Running the container..."
+docker run -d --name todo-app -p 3000:3000 divyam2701/todo-app:latest

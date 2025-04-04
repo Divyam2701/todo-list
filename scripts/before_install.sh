@@ -1,11 +1,9 @@
 #!/bin/bash
-echo "Checking if the server is running..."
-
-if pm2 list | grep -q "to-do-list"; then
-    echo "Stopping the existing PM2 process..."
-    pm2 stop to-do-list
-    pm2 delete to-do-list
+echo "Checking if the app is running..."
+if pgrep node; then
+    echo "Stopping running Node.js application..."
+    pm2 stop all
 fi
 
 echo "Updating system packages..."
-sudo apt update -y
+sudo apt-get update -y

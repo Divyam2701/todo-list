@@ -1,4 +1,4 @@
 #!/bin/bash
-echo "Stopping the Vite app..."
-pm2 stop to-do-list || true
-pm2 delete to-do-list || true
+echo "Stopping existing Docker container..."
+docker stop todo-app || true
+docker rm todo-app || true

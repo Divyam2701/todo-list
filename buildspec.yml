@@ -1,0 +1,39 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to AWS ECR..."
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 339713000397.dkr.ecr.us-east-1.amazonaws.com/project/to-do-list
+      - echo "Logging in to Docker Hub..."
+      - echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+      - echo "Installing dependencies..."
+      - npm install
+      - echo "Running security updates..."
+      - npm audit fix --force
+
+  build:
+    commands:
+      - echo "Building the project..."
+      - npm run build
+      - echo "Building Docker image..."
+      - docker build -t todo-app .
+      - docker tag todo-app:latest 339713000397.dkr.ecr.us-east-1.amazonaws.com/project/to-do-list:latest
+      - docker tag todo-app:latest divyam2701/todo-app:latest
+
+  post_build:
+    commands:
+      - echo "Pushing Docker image to AWS ECR..."
+      - docker push 339713000397.dkr.ecr.us-east-1.amazonaws.com/project/to-do-list:latest
+      - echo "Pushing Docker image to Docker Hub..."
+      - docker push divyam2701/todo-app:latest
+      - echo "Build completed. Preparing for deployment..."
+      - echo "Writing image details to imagedefinitions.json..."
+      - printf '[{"name":"todo-app","imageUri":"339713000397.dkr.ecr.us-east-1.amazonaws.com/project/to-do-list:latest:latest"}]' > imagedefinitions.json
+      - echo "Done."
+
+artifacts:
+  files:
+    - appspec.yml
+    - imagedefinitions.json
+    - scripts/*
