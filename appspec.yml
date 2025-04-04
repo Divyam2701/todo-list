@@ -6,8 +6,8 @@ files:
 
 permissions:
   - object: /home/ubuntu/to-do-list
-    owner: ec2-user
-    group: ec2-user
+    owner: ubuntu
+    group: ubuntu
     mode: 755
 
 hooks:
