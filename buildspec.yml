@@ -7,10 +7,8 @@ phases:
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 339713000397.dkr.ecr.us-east-1.amazonaws.com/project/to-do-list
       - echo "Logging in to Docker Hub..."
       - echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
-      - echo "Installing dependencies..."
-      - npm install
-      - echo "Running security updates..."
-      - npm audit fix --force
+      - echo $DOCKER_HUB_PASSWORD
+      - echo $DOCKER_HUB_USERNAME
 
   build:
     commands:
