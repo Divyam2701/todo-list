@@ -7,20 +7,18 @@ RUN npm install -g pm2
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and lock file
+# Copy dependencies
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy rest of the app
+# Copy source code
 COPY . .
 
-# Build the Vite app
+# Build Vite app
 RUN npm run build
 
-# Expose the port Vite app will run on
+# Expose frontend port
 EXPOSE 3000
 
-# Serve the app with PM2
-CMD ["pm2-runtime", "serve", "dist", "3000", "--spa", "--name", "to-do-list"]
+# Start app using PM2 serving the dist folder
+CMD ["sh", "-c", "pm2 serve dist 3000 --spa --name to-do-list && pm2-runtime"]
