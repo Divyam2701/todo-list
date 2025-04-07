@@ -1,24 +1,26 @@
-# Use Node.js base image
-FROM node:18
+# Stage 1: Build the Vite app
+FROM node:18-alpine as builder
 
-# Install PM2 globally
-RUN npm install -g pm2
-
-# Set working directory
 WORKDIR /app
 
-# Copy dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy source code
 COPY . .
-
-# Build Vite app
 RUN npm run build
 
-# Expose frontend port
+# Stage 2: Serve using PM2
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install global dependencies
+RUN npm install -g pm2 serve
+
+COPY --from=builder /app/dist ./dist
+COPY ecosystem.config.js .
+
 EXPOSE 3000
 
-# Start app using PM2 serving the dist folder
-CMD ["sh", "-c", "pm2 serve dist 3000 --spa --name to-do-list && pm2-runtime"]
+# Use pm2-runtime to keep container alive
+CMD ["pm2-runtime", "ecosystem.config.js"]
