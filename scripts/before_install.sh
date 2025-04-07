@@ -1,9 +1,10 @@
 #!/bin/bash
-echo "Checking if the app is running..."
-if pgrep node; then
-    echo "Stopping running Node.js application..."
-    pm2 stop all
-fi
 
-echo "Updating system packages..."
-sudo apt-get update -y
+echo "Starting Docker service..."
+sudo systemctl start docker
+
+echo "Stopping and removing old container (if exists)..."
+docker stop todo-container || true
+docker rm todo-container || true
+
+echo "System ready for new container deployment."

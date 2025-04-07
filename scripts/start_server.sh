@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Starting the application..."
-cd /home/ec2-user/todo-app
+cd /home/ubuntu/todo-app
 
 echo "Pulling the latest Docker image..."
 docker pull divyam2701/todo-app:latest
