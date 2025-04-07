@@ -1,23 +1,26 @@
-# Dockerfile
-
-# Use the official Node.js base image
+# Use Node.js base image
 FROM node:18
+
+# Install PM2 globally
+RUN npm install -g pm2
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy package.json and lock file
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy source code
+# Copy rest of the app
 COPY . .
 
-# Build the app (if applicable)
+# Build the Vite app
 RUN npm run build
 
-# Expose the app port
+# Expose the port Vite app will run on
 EXPOSE 3000
 
-# Start the app
-CMD ["npm", "start"]
+# Serve the app with PM2
+CMD ["pm2-runtime", "serve", "dist", "3000", "--spa", "--name", "to-do-list"]
