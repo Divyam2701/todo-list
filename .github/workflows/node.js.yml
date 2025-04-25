@@ -3,7 +3,7 @@ name: Deploy Todo App to Azure Container Apps
 on:
   push:
     branches:
-      - main  # or 'master' if your default branch is that
+      - master  # or 'master' if your default branch is that
 
 jobs:
   build-and-deploy:
