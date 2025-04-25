@@ -1,0 +1,35 @@
+name: Deploy Todo App to Azure Container Apps
+
+on:
+  push:
+    branches:
+      - main  # or 'master' if your default branch is that
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Log in to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Log in to Azure Container Registry (ACR)
+      run: az acr login --name todoapp01
+
+    - name: Build Docker Image
+      run: docker build -t todoapp01.azurecr.io/todo-app:latest .
+
+    - name: Push Docker Image to ACR
+      run: docker push todoapp01.azurecr.io/todo-app:latest
+
+    - name: Deploy to Azure Container Apps
+      run: |
+        az containerapp update \
+          --name todo-app \
+          --resource-group EKS-cluster \
+          --image todoapp01.azurecr.io/todo-app:latest
