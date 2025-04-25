@@ -77,7 +77,7 @@ function App() {
       <div className="container mx-auto bg-slate-300 my-5 rounded-xl p-5 min-h-[80vh]">
 
         <div className="addTodo my-5">
-          <h1 className='text-lg font-bold'>Add a Todo</h1>
+          <h1 className='text-lg font-bold'>Add a Todo and also delete something with the delete button</h1>
 
           {/* For the input Bar */}
           <input onChange={handleChange} value={todo} type="text" className='w-80 rounded-lg p-2' />
