@@ -22,14 +22,14 @@ jobs:
       run: az acr login --name todoapp01
 
     - name: Build Docker Image
-      run: docker build -t todoapp01.azurecr.io/todo-app:latest .
+      run: docker build -t todoapp01.azurecr.io/myimage:latest .
 
     - name: Push Docker Image to ACR
-      run: docker push todoapp01.azurecr.io/todo-app:latest
+      run: docker push todoapp01.azurecr.io/myimage:latest
 
     - name: Deploy to Azure Container Apps
       run: |
         az containerapp update \
           --name todo-app \
           --resource-group EKS-cluster \
-          --image todoapp01.azurecr.io/todo-app:latest
+          --image todoapp01.azurecr.io/myimage:latest
