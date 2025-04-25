@@ -87,7 +87,7 @@ function App() {
 
         </div>
 
-        <h2 className='text-xl'>Your To-Do's</h2>
+        <h2 className='text-xl'>Your To-Do's and you task</h2>
 
         <div className="todos">
           {todos.length === 0 && <div className='m-5'>Empty Todos List</div>}
